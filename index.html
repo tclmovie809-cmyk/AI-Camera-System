@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080817">
+  <meta name="description" content="AI Vision Pro camera with live filters, face detection and hand tracking.">
+  <title>AI Vision Pro</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/vision_bundle.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">✦</div>
+        <div>
+          <h1>AI VISION <span>PRO</span></h1>
+          <p>YOUR CREATIVE CAMERA</p>
+        </div>
+      </div>
+      <div class="live-badge"><i></i> LIVE STUDIO</div>
+    </header>
+
+    <section class="welcome">
+      <p class="eyebrow">✦ NEXT-GEN CAMERA EXPERIENCE</p>
+      <h2>See yourself<br><span>differently.</span></h2>
+      <p class="subtitle">Camera effects, intelligent tracking and creative tools in one place.</p>
+    </section>
+
+    <main class="studio">
+      <div class="camera-heading">
+        <div>
+          <h3>Camera Studio</h3>
+          <p id="cameraLabel">Camera is ready</p>
+        </div>
+        <div class="connection"><span id="cameraDot"></span><span id="cameraState">OFFLINE</span></div>
+      </div>
+
+      <div class="preview" id="preview">
+        <video id="camera" autoplay playsinline muted></video>
+        <canvas id="overlay"></canvas>
+
+        <div class="camera-placeholder" id="placeholder">
+          <div class="placeholder-icon">✦</div>
+          <h3>Your camera awaits</h3>
+          <p>Start your camera to enter the studio.</p>
+        </div>
+
+        <div class="preview-top">
+          <span class="pill">AI VISION</span>
+          <span class="pill" id="modelBadge">AI NOT LOADED</span>
+        </div>
+
+        <div class="preview-bottom">
+          <span id="previewEffect">ORIGINAL LOOK</span>
+          <span id="previewTime">READY</span>
+        </div>
+      </div>
+
+      <div class="status-row">
+        <span class="status-symbol">✦</span>
+        <p id="status" role="status" aria-live="polite">Welcome! Allow camera access to get started.</p>
+      </div>
+
+      <div class="main-controls">
+        <button class="btn btn-primary" id="startBtn">📷 Start Camera</button>
+        <button class="btn btn-secondary" id="switchBtn">🔄 Switch Camera</button>
+        <button class="btn btn-secondary" id="stopBtn">⏹ Stop</button>
+      </div>
+
+      <section class="panel">
+        <div class="section-title">
+          <div><span class="section-icon">🎨</span><h3>Visual Filters</h3></div>
+          <span class="mini-label">LIVE EFFECTS</span>
+        </div>
+
+        <div class="filter-grid">
+          <button class="filter-card active" data-filter="none">
+            <span class="filter-icon">◉</span><span>Original</span>
+          </button>
+          <button class="filter-card" data-filter="vivid">
+            <span class="filter-icon">🌈</span><span>Vivid</span>
+          </button>
+          <button class="filter-card" data-filter="mono">
+            <span class="filter-icon">◐</span><span>Mono</span>
+          </button>
+          <button class="filter-card" data-filter="vintage">
+            <span class="filter-icon">🌅</span><span>Vintage</span>
+          </button>
+          <button class="filter-card" data-filter="dream">
+            <span class="filter-icon">💜</span><span>Dream</span>
+          </button>
+          <button class="filter-card" data-filter="cool">
+            <span class="filter-icon">❄️</span><span>Arctic</span>
+          </button>
+          <button class="filter-card" data-filter="warm">
+            <span class="filter-icon">☀️</span><span>Golden</span>
+          </button>
+          <button class="filter-card" data-filter="cinema">
+            <span class="filter-icon">🎬</span><span>Cinema</span>
+          </button>
+        </div>
+
+        <label class="slider-label" for="intensity">
+          <span>Filter intensity</span><strong id="intensityValue">100%</strong>
+        </label>
+        <input id="intensity" type="range" min="0" max="100" value="100">
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div><span class="section-icon">🧠</span><h3>AI Intelligence</h3></div>
+          <span class="mini-label">EXPERIMENTAL</span>
+        </div>
+
+        <div class="ai-grid">
+          <div class="ai-card">
+            <div class="ai-card-top"><span>👤</span><span class="ai-light" id="faceLight"></span></div>
+            <h4>Face Detection</h4>
+            <p id="faceStatus">Not started</p>
+          </div>
+          <div class="ai-card">
+            <div class="ai-card-top"><span>✋</span><span class="ai-light" id="handLight"></span></div>
+            <h4>Hand Tracking</h4>
+            <p id="handStatus">Not started</p>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary full-btn" id="aiBtn">🧠 Load AI Models</button>
+        <p class="hint">AI models require internet access on the first load. Results depend on your device and browser.</p>
+      </section>
+
+      <section class="panel">
+        <div class="section-title">
+          <div><span class="section-icon">📸</span><h3>Capture Studio</h3></div>
+          <span class="mini-label">YOUR MOMENTS</span>
+        </div>
+        <div class="capture-grid">
+          <button class="btn btn-primary" id="photoBtn">📸 Take Photo</button>
+          <button class="btn btn-secondary" id="recordBtn">🎥 Record Video</button>
+        </div>
+        <p class="record-status" id="recordStatus">No recording in progress.</p>
+        <div id="gallery" class="gallery"></div>
+      </section>
+
+      <footer>
+        <div class="footer-logo">✦ AI VISION PRO</div>
+        <p>Made for creativity. Powered by your browser.</p>
+        <p class="privacy">Camera runs on your device. Photos and recordings are saved only when you choose to capture or record them.</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
